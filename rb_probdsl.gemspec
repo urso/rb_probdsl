@@ -9,5 +9,7 @@ spec = Gem::Specification.new do |s|
   s.author      = 'Steffen Siering'
   s.email       = 'steffen <dot> siering -> gmail <dot> com'
   s.homepage    = 'http://github.com/urso/rb_probdsl'
+  s.add_dependency('rb_prob')
+  s.add_dependency('rb_delimcc')
 end
 
