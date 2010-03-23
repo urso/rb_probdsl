@@ -95,6 +95,18 @@ p(normalizedProb do
     end
 end)
 
+p "P(A|John=true, Mary=true)"
+p(normalizedProb do
+    b = p_burglary
+    e = p_earthquake
+    a = p_alarm(b, e)
+    if p_john(a) == :J && p_mary(a) == :M
+        a
+    else
+        nil
+    end
+end)
+
 # john and mary tell us for sure, the alarm went of and we know
 # that is true...
 p "P(B|John=true, Mary=true, Alarm=true)"
