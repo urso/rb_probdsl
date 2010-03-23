@@ -1,23 +1,37 @@
 
 Introduction
-------------
+============
 
 rb_probdsl offers simple discrete probabilistic programming support using 
 delimited continuations in ruby.
 
 Installation
-------------
+============
+
+## Install Gem
+
+rb_probdsl is available via rubygems.org and be installed using rubygems:
+
+    $ gem install rb_probdsl
+
+## Install From Source
 
 Before installing rb_probdsl, you need to install it's dependencies:
 
 - rb_prob (monadic probabilistic programming library):
-  http://github.com/urso/rb_prob
+  install from source: http://github.com/urso/rb_prob  
+  or via gem:
+
+    $ gem install rb_prob
+
 
 - rb_delimcc (delimited continuations for ruby):
-  http://github.com/urso/rb_delimcc
+  install from source: http://github.com/urso/rb_delimcc  
+  or via gem:
 
-rb_probdsl comes with a gem specification, but is not available from rubygems.org
-yet. So to install you have to:
+    $ gem install rb_prob
+
+now install rb_probdsl itself.
 
 1. get the source 
     - from github: 
@@ -33,7 +47,7 @@ yet. So to install you have to:
     $ sudo gem install rb_probdsl
 
 Usage:
-------
+======
 
 To use rb_probdsl you need to use rubygems and require the library:
 
@@ -45,7 +59,7 @@ To use rb_probdsl you need to use rubygems and require the library:
 For usage examples have a look into the examples directory.
 
 Evaluation Strategies:
-----------------------
+======================
 
 Instead of computing the probability distributions directly an unevaulated
 decision tree is build and only the root is returned.
@@ -90,7 +104,7 @@ Furthermore the unevaluated tree instances provide the following functions:
 Some simple examples can be found in "examples/test.rb"
 
 Examples
---------
+========
 
 The 'examples' directory contains documented examples describing the problem and
 solution with forumlas and code. It is recommended to read them to get a
