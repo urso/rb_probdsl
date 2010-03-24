@@ -69,9 +69,10 @@ far are:
 
     run_prob { ... }          # returns an unevaluated tree
 
-    prob { ... }              # will evaluate tree to full decision tree
+    prob { ... }              # will evaluate probabilistic code block
+                              # to full probability distribution.
 
-    normalizedProb { ... } # like prob[A], but will normalize and filter out
+    norm_prob { ... }      # like prob[A], but will normalize and filter out
                            # nil values from the distribution.
                            # usefull when doing bayesian inference
 
