@@ -8,13 +8,25 @@ module ProbDSL
     include DelimCC
     include Probably
 
+    class PNone
+        def reify
+            nil
+        end
+
+        def pick
+            nil
+        end
+    end
+
+    PNil = PNone.new
+
     class PValue
         def initialize(v)
             @value = v
         end
 
         def reify
-            Probably.mkState @value
+            Probably.mk_const @value
         end
 
         def pick
@@ -22,6 +34,9 @@ module ProbDSL
         end
     end
 
+    # Tree Node in Decision tree.
+    # All sub nodes are unevaluated, so tree expansion is lazy
+    # and therefore different evaluation strategies may be implemented.
     class PChoice
         def initialize(&blk)
             @fn = blk
@@ -38,19 +53,22 @@ module ProbDSL
         end
 
         def pick
-            d = @fn.call
-            m,p = d.pick
-            k = m[0]
-            v = m[1]
-            tmp = k.call v
-            tmp.pick
+            dist = @fn.call
+            picked,probability = dist.pick
+            cont = picked[0]
+            value = picked[1]
+            cont.call(value).pick
         end
     end
 
     def run_prob(&blk)
         reset {
-            v = blk.call
-            PValue.new v
+            value = blk.call
+            if value == nil
+                PNil
+            else
+                PValue.new value
+            end
         }
     end
 
@@ -58,7 +76,7 @@ module ProbDSL
         run_prob(&blk).reify
     end
 
-    def normalizedProb(&blk)
+    def norm_prob(&blk)
         prob(&blk).normalize
     end
 
@@ -67,44 +85,42 @@ module ProbDSL
     end
 
     def collect(pred, tree)
-        m = Hash.new(0)
+        tmp = Hash.new(0)
         while (pred.call)
-            x = tree.pick
-            m[x] += 1.0
+            tmp[tree.pick] += 1.0
         end
-        Distribution.new :MAP, m
+        Distribution.new :MAP, tmp
     end
 
     def collecting(pred, &blk)
         collect(pred, run_prob(&blk))
     end
 
-    def loop_k(k)
-        tmp = k
+    def loop_k(ktimes)
+        tmp = ktimes
         proc {
-            r = tmp > 0
+            ret = tmp > 0
             tmp-=1
-            r
+            ret
         }
     end
 
-    def loop_t(s)
+    def loop_t(seconds)
         start = Time.now
         proc {
-            (Time.now - start) < s
+            (Time.now - start) < seconds
         }
     end
 
     def dist(data)
-        shift { |k|
+        shift { |cont|
             PChoice.new do
-                m = Hash.new(0)
-                data.each do |p,d|
-                    tmp = [k,d]
-                    m[tmp] += p
+                map = Hash.new(0)
+                data.each do |prob, dist|
+                    map[[cont, dist]] += prob
                 end
 
-                Distribution.new :MAP, m
+                Distribution.new :MAP, map
             end
         }
     end
@@ -113,14 +129,14 @@ module ProbDSL
         dist(data.map {|x| [1, x]})
     end
 
-    def flip(x, *data)
+    def flip(prob, *data)
         case data.length
         when 0
-            dist [[x, true], [1 - x, false]]
+            dist [[prob, true], [1 - prob, false]]
         when 1
-            dist [[x, data[0]], [1 - x, nil]]
+            dist [[prob, data[0]], [1 - prob, nil]]
         when 2
-            dist [[x, data[0]], [1 - x, data[1]]]
+            dist [[prob, data[0]], [1 - prob, data[1]]]
         else
             raise 'illegal number of arguments'
         end
