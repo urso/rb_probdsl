@@ -75,16 +75,16 @@ def p_mary(a)
     flip( a == :A ? 0.7 : 0.01, :M, :notM)
 end
 
-p "joint probability:"
-p(prob do
+puts "\njoint probability:"
+puts(prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
     [b,e,a,p_john(a), p_mary(a)]
 end)
 
-p "P(B|John=true, Mary=true):"
-p(normalizedProb do
+puts "\nP(B|John=true, Mary=true):"
+puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
@@ -95,8 +95,8 @@ p(normalizedProb do
     end
 end)
 
-p "P(A|John=true, Mary=true)"
-p(normalizedProb do
+puts "\nP(A|John=true, Mary=true)"
+puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b, e)
@@ -109,8 +109,8 @@ end)
 
 # john and mary tell us for sure, the alarm went of and we know
 # that is true...
-p "P(B|John=true, Mary=true, Alarm=true)"
-p(normalizedProb do
+puts "\nP(B|John=true, Mary=true, Alarm=true)"
+puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
@@ -122,8 +122,8 @@ p(normalizedProb do
 end)
 
 # what is the probability john will call, if mary called?
-p "P(John|Mary=true)"
-p(normalizedProb do
+puts "\nP(John|Mary=true)"
+puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
@@ -135,8 +135,8 @@ p(normalizedProb do
 end)
 
 # and probability mary will call, if john did
-p "P(Mary|John=true)"
-p(normalizedProb do
+puts "\nP(Mary|John=true)"
+puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)

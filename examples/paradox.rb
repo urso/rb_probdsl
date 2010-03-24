@@ -18,7 +18,7 @@ the probability that the total on the uppermost faces of the two dice is "7"?
 Answear (2/11):
 HERE
 
-p normalizedProb {
+puts norm_prob {
     d1 = die; d2 = die
     if d1 == 4 || d2 == 4
         d1 + d2 == 7
@@ -31,7 +31,7 @@ puts <<HERE
 
 The same experiment using a simulation (t = 10s):
 HERE
-p collecting(loop_t 10) {
+puts collecting(loop_t 10) {
     d1 = die; d2 = die
     if d1 == 4 || d2 == 4
         d1 + d2 == 7

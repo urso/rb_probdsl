@@ -98,8 +98,8 @@ end
 
 # print some results
 p 'strategy stay:'
-p(prob { stay(firstRound).testWinner })
+puts(prob { stay(firstRound).testWinner })
 
 p 'strategy switch:'
-p(prob { switch(firstRound).testWinner })
+puts(prob { switch(firstRound).testWinner })
 

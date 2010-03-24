@@ -51,7 +51,7 @@ def p_test(i)
 end
 
 p "P(I|T=Positive)"
-p normalizedProb {
+puts norm_prob {
     i = p_disease
     if p_test(i) == :Positive
         i

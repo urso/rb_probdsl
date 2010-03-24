@@ -4,9 +4,9 @@ require 'rubygems'
 require 'probdsl'
 include ProbDSL
 
-p 'test1'
+puts "test1"
 
-p(prob {
+puts(prob {
     d = uniform [1,2,3,4,5,6]
     d
 })
@@ -23,7 +23,7 @@ def dice
     [d1, d2]
 end
 
-p(prob {
+puts(prob {
     d1 = die
     d2 = die
     d1 + d2
@@ -31,17 +31,17 @@ p(prob {
 
 p 'test3'
 
-p(prob{ die + die })
+puts(prob{ die + die })
 
 p 'test4'
 
-p(pick {
+puts(pick {
     dice
 })
 
 p 'test5'
 
-p(prob {
+puts(prob {
     d1, d2 = dice
     d1 + d2
 })
@@ -49,20 +49,20 @@ p(prob {
 p 'test6'
 tmp = prob{ dice }
 
-p(prob {
+puts(prob {
     d1, d2 = dist(tmp) # this time use already evaluated distribution
     d1 + d2
 })
 
 p 'test7'
 
-p(collecting(loop_k 1000) {
+puts(collecting(loop_k 1000) {
     die + die
 })
 
 p 'test8'
 
-p(collecting(loop_t 30) {
+puts(collecting(loop_t 30) {
     die + die
 })
 
