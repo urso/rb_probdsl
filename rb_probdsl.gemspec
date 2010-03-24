@@ -1,7 +1,7 @@
 
 spec = Gem::Specification.new do |s|
   s.name        = 'rb_probdsl'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.licenses    = 'BDS3'
   s.summary     = 'do probabilistic programming in ruby'
   s.files       = Dir['lib/**/*.rb'] + Dir['examples/**/*.rb'] + ['LICENSE']
@@ -9,7 +9,7 @@ spec = Gem::Specification.new do |s|
   s.author      = 'Steffen Siering'
   s.email       = 'steffen <dot> siering -> gmail <dot> com'
   s.homepage    = 'http://github.com/urso/rb_probdsl'
-  s.add_dependency('rb_prob')
+  s.add_dependency('rb_prob', '>= 0.0.2')
   s.add_dependency('rb_delimcc')
 end
 
