@@ -112,6 +112,14 @@ module ProbDSL
         }
     end
 
+    def guard(bool)
+        if !bool
+            shift do |cont|
+                PNil
+            end
+        end
+    end
+
     def dist(data)
         shift { |cont|
             PChoice.new do
