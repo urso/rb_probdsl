@@ -1,7 +1,7 @@
 
 spec = Gem::Specification.new do |s|
   s.name        = 'rb_probdsl'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.licenses    = 'BDS3'
   s.summary     = 'do probabilistic programming in ruby'
   s.files       = Dir['lib/**/*.rb'] + Dir['examples/**/*.rb'] + ['LICENSE']
