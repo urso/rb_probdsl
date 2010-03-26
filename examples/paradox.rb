@@ -20,11 +20,8 @@ HERE
 
 puts norm_prob {
     d1 = die; d2 = die
-    if d1 == 4 || d2 == 4
-        d1 + d2 == 7
-    else
-        nil
-    end
+    guard d1 == 4 || d2 == 4
+    d1 + d2 == 7
 }.probability(true)
 
 puts <<HERE
@@ -33,10 +30,7 @@ The same experiment using a simulation (t = 10s):
 HERE
 puts collecting(loop_t 10) {
     d1 = die; d2 = die
-    if d1 == 4 || d2 == 4
-        d1 + d2 == 7
-    else
-        nil
-    end
+    guard d1 == 4 || d2 == 4
+    d1 + d2 == 7
 }.normalize.probability(true)
 

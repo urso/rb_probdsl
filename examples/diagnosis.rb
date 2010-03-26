@@ -53,10 +53,7 @@ end
 p "P(I|T=Positive)"
 puts norm_prob {
     i = p_disease
-    if p_test(i) == :Positive
-        i
-    else
-        nil
-    end
+    guard p_test(i) == :Positive
+    i
 }
 

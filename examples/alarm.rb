@@ -88,11 +88,8 @@ puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
-    if (p_john(a) == :J && p_mary(a) == :M)
-        b
-    else
-        nil
-    end
+    guard p_john(a) == :J && p_mary(a) == :M
+    b
 end)
 
 puts "\nP(A|John=true, Mary=true)"
@@ -100,11 +97,8 @@ puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b, e)
-    if p_john(a) == :J && p_mary(a) == :M
-        a
-    else
-        nil
-    end
+    guard p_john(a) == :J && p_mary(a) == :M
+    a
 end)
 
 # john and mary tell us for sure, the alarm went of and we know
@@ -114,11 +108,8 @@ puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
-    if (a == :A && p_john(a) == :J && p_mary(a) == :M)
-        b
-    else
-        nil
-    end
+    guard a == :A && p_john(a) == :J && p_mary(a) == :M
+    b
 end)
 
 # what is the probability john will call, if mary called?
@@ -127,11 +118,8 @@ puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
-    if (p_mary(a) == :M)
-        p_john(a)
-    else
-        nil
-    end
+    guard p_mary(a) == :M
+    p_john(a)
 end)
 
 # and probability mary will call, if john did
@@ -140,10 +128,7 @@ puts(norm_prob do
     b = p_burglary
     e = p_earthquake
     a = p_alarm(b,e)
-    if (p_john(a) == :J)
-        p_mary(a)
-    else
-        nil
-    end
+    guard p_john(a) == :J
+    p_mary(a)
 end)
 
