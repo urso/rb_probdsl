@@ -28,9 +28,11 @@ puts <<HERE
 
 The same experiment using a simulation (t = 10s):
 HERE
-puts collecting(loop_t 10) {
+prob, k = collecting(loop_t 10) do
     d1 = die; d2 = die
     guard d1 == 4 || d2 == 4
     d1 + d2 == 7
-}.normalize.probability(true)
+end
+puts "loops: #{k}"
+puts prob.normalize.probability(true)
 

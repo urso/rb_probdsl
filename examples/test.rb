@@ -62,7 +62,10 @@ puts(collecting(loop_k 1000) {
 
 p 'test8'
 
-puts(collecting(loop_t 30) {
+prob, k = collecting(loop_t 30) do
     die + die
-})
+end
+
+puts "loops: #{k}"
+puts prob
 
