@@ -8,58 +8,31 @@ module ProbDSL
     include DelimCC
     include Probably
 
-    class PNone
-        def reify
-            nil
-        end
-
-        def pick
-            nil
-        end
-    end
-
-    PNil = PNone.new
-
-    class PValue
-        def initialize(v)
-            @value = v
-        end
-
-        def reify
-            Probably.mk_const @value
-        end
-
-        def pick
-            @value
-        end
-    end
-
-    # Tree Node in Decision tree.
-    # All sub nodes are unevaluated, so tree expansion is lazy
-    # and therefore different evaluation strategies may be implemented.
-    class PChoice
-        def initialize(&blk)
-            @fn = blk
-        end
-
-        def reify
-            d = @fn.call
-            d.dep do |m|
-                k = m[0]
-                v = m[1]
-                tmp = k.call(v)
-                tmp.reify
+    class PDistribution < Distribution
+        def eval
+            self.dep do |m|
+                m.call.eval
             end
         end
 
-        def pick
-            dist = @fn.call
-            picked,probability = dist.pick
-            cont = picked[0]
-            value = picked[1]
-            cont.call(value).pick
+        def eval_pick
+            cont,* = pick
+            cont.call.eval_pick
         end
     end
+
+    class PNone
+        def eval;      PDistribution.mk_const nil; end
+        def eval_pick; nil; end
+    end
+
+    class PValue
+        def initialize(v); @value = v; end
+        def eval;          PDistribution.mk_const @value; end
+        def eval_pick;     @value; end
+    end
+
+    PNil = PNone.new
 
     def run_prob(&blk)
         reset {
@@ -73,7 +46,7 @@ module ProbDSL
     end
 
     def prob(&blk)
-        run_prob(&blk).reify
+        run_prob(&blk).eval
     end
 
     def norm_prob(&blk)
@@ -81,15 +54,17 @@ module ProbDSL
     end
 
     def pick(&blk)
-        run_prob(&blk).pick
+        run_prob(&blk).eval_pick
     end
 
     def collect(pred, tree)
         tmp = Hash.new(0)
+        n   = 0
         while (pred.call)
-            tmp[tree.pick] += 1.0
+            tmp[tree.eval_pick] += 1.0
+            n += 1
         end
-        Distribution.new :MAP, tmp
+        [PDistribution.new(:MAP, tmp), n]
     end
 
     def collecting(pred, &blk)
@@ -121,16 +96,15 @@ module ProbDSL
     end
 
     def dist(data)
-        shift { |cont|
-            PChoice.new do
-                map = Hash.new(0)
-                data.each do |prob, dist|
-                    map[[cont, dist]] += prob
-                end
-
-                Distribution.new :MAP, map
+        shift do |cont|
+            map = Hash.new 0
+            data.each do |prob, value|
+                tmp = proc { cont.call value }
+                map[tmp] = prob
             end
-        }
+
+            PDistribution.new :MAP, map
+        end
     end
 
     def uniform(data)
