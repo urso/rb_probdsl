@@ -95,12 +95,22 @@ far are:
 
 Furthermore the unevaluated tree instances provide the following functions:
 
-    <tree>.reify           # computes a probability distribution from 
+    <tree>.eval            # computes a probability distribution from 
                            # unevaluated lazy tree
 
-    <tree>.pick            # randomly samples a value from tree.
+    <tree>.eval_pick       # randomly samples a value from tree.
                            # This sampling is done in O(N) steps with
                            # N being the number of random variables to visit
+
+    <tree>.flatten         # flattens a tree and computes probabilities.
+                           # use with <tree>.to_d to improve runtime by 
+                           # evaluating subtrees first
+                
+    <tree>.to_d            # to_d will inject the <tree> into the current
+                           # probabilistic block. using flatten first on that
+                           # tree and then to_d subtree shared between
+                           # variables can be precomputed to save space and
+                           # time.
 
 Some simple examples can be found in "examples/test.rb"
 
@@ -118,4 +128,6 @@ Recommended reading order:
 - examples/diagnosis.rb  # most basic bayesian inference example
 - examples/montyhall.rb  # monty hall problem/paradox
 - examples/alarm.rb      # example from Artificial Intelligence - A Modern Approach
+- example/spamplan.rb    # a simple spam filter using a mix of
+                         # probdsl and the monadic interface
 
