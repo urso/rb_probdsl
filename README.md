@@ -128,6 +128,7 @@ Recommended reading order:
 - examples/diagnosis.rb  # most basic bayesian inference example
 - examples/montyhall.rb  # monty hall problem/paradox
 - examples/alarm.rb      # example from Artificial Intelligence - A Modern Approach
+- examples/coins.rb      # about optimizing computations
 - example/spamplan.rb    # a simple spam filter using a mix of
                          # probdsl and the monadic interface
 
