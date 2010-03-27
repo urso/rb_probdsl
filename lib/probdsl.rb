@@ -19,17 +19,64 @@ module ProbDSL
             cont,* = pick
             cont.call.eval_pick
         end
+
+        def flatten
+            self.dep do |m|
+                m.call.flatten
+            end
+        end
+
+        def to_d
+            tmp = self.map { |f|
+                f.call
+            }
+            shift do |cont|
+                tmp.map {|f|
+                    proc { cont.call(f) }
+                }
+                # self.map { |f|
+                #     proc { cont.call(f.call) }
+                # }
+            end
+        end
     end
 
     class PNone
-        def eval;      PDistribution.mk_const nil; end
+        def eval;      nil; end
         def eval_pick; nil; end
+        def flatten;   nil; end
+
+        def call;      nil; end
+
+        def to_d
+            nil
+        end
     end
 
     class PValue
+        attr_reader :value
+
         def initialize(v); @value = v; end
         def eval;          PDistribution.mk_const @value; end
         def eval_pick;     @value; end
+
+        def flatten
+            PDistribution.mk_const self
+        end
+
+        def call;         @value end
+
+        def eql?(b)
+            @value = b.value
+        end
+
+        def hash
+            @value.hash
+        end
+
+        def to_d
+            @value
+        end
     end
 
     PNil = PNone.new
